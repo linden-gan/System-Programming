@@ -1,6 +1,5 @@
-# C
-
-## C Basic Syntax
+## C
+### C Basic Syntax
 > `int main(int argc, char* argv[]) {`
 - argc: arg count
 - argv: arg vector
@@ -8,10 +7,16 @@
   - argc = 3, argv[0] = "./foo", argv[1] = "-w", argv[2] = "66"
     (they are all strings)
 
+### GCC
+Standard: `gcc -Wall -g -std=c17 hello1.c hello2.c -o hello`.  
+`-g`: debug flag  
+`-o`: specify output name (no matter object or binary file).   
+`-c`: `gcc -Wall -g -std=c17 -c hello.c -o hello.c`: only compile a .c file to object file without linking.
+
 ### Array
 `int arr[] = {1, 2, 3};` or `int arr[3] = {1, 2, 3};` or `int arr[5] = {1, 2, 3};` (has two garbadge buckets)  
 `int arr[5] = {0};`: shortcut: five 0's  
-`int arr[5];`: garbadge placeholder  
+`int arr[5];`: a placeholder of 5 garbadges.  
 `arr` is a pointer to the array.  
 String array: `char* str` or `char str[3] = "Hi";` or `{'H', 'i', '\0'};`  
 By the same token, `str` is a pointer to the string.  
@@ -113,6 +118,7 @@ NULL for error or reaching the end of directory
   use the first target in Makefile as target.
 - Can use phony targets like clean, all, for convenience.
 
+## C++
 ### C++ Basic
 - Reference: creating alias: `int& y = x`, so y and x refer to the same thing.
 Useful when passing reference to a function. (Reference is a better pointer: we
@@ -332,7 +338,7 @@ doesn't count for reference.
 - `reintedyrpret_cast<void*>(num)` cast unrelated types with same size
   - void* to long
   
-### Computer Network
+## Computer Network
 - Layout
   - Physical layer: cable
   - Data link layer: computers communicate via ethernet. Use media access control (MAC)
