@@ -9,9 +9,9 @@
     (they are all strings)
 
 ### Array
-`int arr[] = {1, 2, 3};` or `int arr[3] = {1, 2, 3};` or `int arr[5] = {1, 2, 3};` (has two garbadge buckets)
-`int arr[5] = {0};`: shortcut: five 0's
-`int arr[5];`: garbadge placeholder
+`int arr[] = {1, 2, 3};` or `int arr[3] = {1, 2, 3};` or `int arr[5] = {1, 2, 3};` (has two garbadge buckets)  
+`int arr[5] = {0};`: shortcut: five 0's  
+`int arr[5];`: garbadge placeholder  
 
 ### Error & Exit
 - process exit, aka return from main, with status code like exit(0).
