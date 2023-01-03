@@ -8,6 +8,11 @@
   - argc = 3, argv[0] = "./foo", argv[1] = "-w", argv[2] = "66"
     (they are all strings)
 
+### Array
+`int arr[] = {1, 2, 3};` or `int arr[3] = {1, 2, 3};` or `int arr[5] = {1, 2, 3};` (has two garbadge buckets)
+`int arr[5] = {0};`: shortcut: five 0's
+`int arr[5];`: garbadge placeholder
+
 ### Error & Exit
 - process exit, aka return from main, with status code like exit(0).
   0 means EXIT_SUCCESS. Other numbers mean EXIT_FAILURE.
