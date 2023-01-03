@@ -14,6 +14,7 @@
 `int arr[5];`: garbadge placeholder  
 `arr` is a pointer to the array.  
 String array: `char* str` or `char str[3] = "Hi";` or `{'H', 'i', '\0'};`  
+By the same token, `str` is a pointer to the string.  
 
 
 ### Error & Exit
