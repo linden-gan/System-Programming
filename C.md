@@ -1,5 +1,5 @@
 ## C
-### C Basic Syntax
+### C main args
 > `int main(int argc, char* argv[]) {`
 - argc: arg count
 - argv: arg vector
@@ -13,14 +13,23 @@ Standard: `gcc -Wall -g -std=c17 hello1.c hello2.c -o hello`.
 `-o`: specify output name (no matter object or binary file).   
 `-c`: `gcc -Wall -g -std=c17 -c hello.c -o hello.c`: only compile a .c file to object file without linking.
 
-### Array
+### Array & String
 `int arr[] = {1, 2, 3};` or `int arr[3] = {1, 2, 3};` or `int arr[5] = {1, 2, 3};` (has two garbadge buckets)  
 `int arr[5] = {0};`: shortcut: five 0's  
 `int arr[5];`: a placeholder of 5 garbadges.  
 `arr` is a pointer to the array.  
-String array: `char* str` or `char str[3] = "Hi";` or `{'H', 'i', '\0'};`  
+`sizeof(arr);` to know array's size (only work in current scope of arr).  
+String array: `char* str` or `char str[] = "Hi";` or `{'H', 'i', '\0'};`  
 By the same token, `str` is a pointer to the string.  
-
+Note: in `char* arr = "Hi";` arr points to a string literal array in static memory, so it can't be modified. Use `char arr[] = "Hi";` if want to modify the string, since it makes a copy of string array in stack.   
+    
+    generate_string(char** s) {  // char** for string output parameter
+        *s = "hello";  // static memory
+    }
+    
+    char* res;
+    generate_string(&res);
+    printf("%s\n", res);
 
 ### Error & Exit
 - process exit, aka return from main, with status code like exit(0).
@@ -35,6 +44,8 @@ callee to just modify it.
 3. Inside callee, DEREFERENCE the passed address to modify. E.g.
 *str = "Hello\n";
 4. After callee, caller can directly use the data. E.g. printf(str);
+
+### Functional pointer
 
 ### malloc() & free()
 - `int* num = (int*) malloc(100 * sizeof(int));  // allocate
