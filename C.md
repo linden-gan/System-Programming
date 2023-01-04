@@ -15,12 +15,16 @@ Standard: `gcc -Wall -g -std=c17 hello1.c hello2.c -o hello`.
 
 ### Array & String
 `int arr[] = {1, 2, 3};` or `int arr[3] = {1, 2, 3};` or `int arr[5] = {1, 2, 3};` (has two garbadge buckets)  
-`int arr[5] = {0};`: shortcut: five 0's  
+`int arr[5] = {0};` or `int arr[5] = {}`: shortcut: five 0's  
 `int arr[5];`: a placeholder of 5 garbadges.  
 `arr` is a pointer to the array.  
 `sizeof(arr);` to know array's size (only work in current scope of arr).  
 String array: `char* str` or `char str[] = "Hi";` or `{'H', 'i', '\0'};`  
 By the same token, `str` is a pointer to the string.  
+
+Note: for any primitive data types (including those inside struct), if we don't initialize them, they will be garbadges.  
+For array, if we `int arr[4];` then it will be garbadges; if we `int arr[4] = {}` then it will be 0's.  
+
 Note: in `char* arr = "Hi";` arr points to a string literal array in static memory, so it can't be modified. Use `char arr[] = "Hi";` if want to modify the string, since it makes a copy of string array in stack.   
     
     generate_string(char** s) {  // char** for string output parameter
@@ -30,6 +34,7 @@ Note: in `char* arr = "Hi";` arr points to a string literal array in static memo
     char* res;
     generate_string(&res);
     printf("%s\n", res);
+
 
 ### Error & Exit
 - process exit, aka return from main, with status code like exit(0).
