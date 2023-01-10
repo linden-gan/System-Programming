@@ -26,9 +26,11 @@ Note: for any primitive data types (including those inside struct), if we don't 
 For array, if we `int arr[4];` then it will be garbadges; if we `int arr[4] = {}` then it will be 0's.  
 
 Note: in `char* arr = "Hi";` arr points to a string literal array in static memory, so it can't be modified. Use `char arr[] = "Hi";` if want to modify the string, since it makes a copy of string array in stack.   
+
+String as output parameter:
     
     generate_string(char** s) {  // char** for string output parameter
-        *s = "hello";  // static memory
+        *s = "hello";  // in static memory, use strcpy() if want it modifiable
     }
     
     char* res;
@@ -51,6 +53,34 @@ callee to just modify it.
 4. After callee, caller can directly use the data. E.g. printf(str);
 
 ### Functional pointer
+
+    int negate(int i) {
+        return -i;
+    }
+
+    int square(int i) {
+        return i * i;
+    }
+
+    void map(int arr[], int size, int (*operation)(int n)) {
+        int i;
+        for (i = 0; i < size; i++) {
+            arr[i] = (*operation)(arr[i]);  // dereference func ptr and plug in param
+        }
+    }
+
+    int main(int argc, char** argv) {
+        int arr[] = {0, 1, 2, 3};
+    // rt type  ptr name  param
+        int (*func_ptr)(int n) = negate;  // initialize a func ptr pointing to negate()
+        map(arr, 4, func_ptr);
+
+        int i;
+        for (i = 0; i < sizeof(arr); i++) {
+            printf("%d\n", arr[i]);
+        }
+    }
+    
 
 ### malloc() & free()
 - `int* num = (int*) malloc(100 * sizeof(int));  // allocate
