@@ -130,13 +130,14 @@ file...
   - `#else`
   - `#define DEBUG(f) \\ define DEBUG to nothing (ignore it)`
   - `#endif`
-- external libraries (`stdlib.h`, `string.h`) are dynamically linked to .o files
+- external libraries (like `stdlib.h`, `string.h`) are dynamically linked to .o files
 - Functions and global variables are `extern` by default. `extern`
 means they can access and can be accessed by things outside of this 
-file.
-- `static` means variables can only be accessed by things in this file.
-- `static` + local variable = a variable that is created in compiling
+file. Multiple extern variables will be resolved to one location. So, `extern` is an indicator that the definition or declaration is elsewhere.
+- `static` + global variable means variables can only be accessed by things in this file (internal linkage). Good to defend personal global variables.
+- `static` + local variable means a variable that is created in compiling
 time, so it won't vanish after its function's frame.
+- `static` + function means the function has internal linkage. Other files cannot see it.
   
 ### I/O
 - ERRNO: global variable for error. When error occurred, program sets
