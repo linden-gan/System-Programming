@@ -107,26 +107,30 @@ objects, but with exactly same field values`
 - Returning struct is also just copying. We can return a small struct 
   by %rax, which is more efficient, but for larger structs, it's
   better to do malloc or output parameter.
-- typedef long long int lli: the last token is the alias.
+- `typedef long long int lli`: the last token is the alias.
+- `typedef struct point_st { int x; int y; } Point, *PointPtr;` define aliases for point struct and its pointer at the 
+same time.
 
 ### Module, Header File, Preprocessor, Global
 - .h file: the interface that only contains declaration and prototype of
 a module
 - Preprocessor: merely a text replacer directed by #include, #define
-  - for example: replace #include "ll.h" by prototypes in "ll.h"
+  - `cpp -P example.c`: preprocess `example.c` and output the preprocessed version .c file
+  - for example: replace `#include "ll.h"` by prototypes in "ll.h"
 - Problem: C file includes A and B file, but A file also includes B
 file...
-  - Solution: `#ifndef FOO_C_`... `#endif`
-- Macro: #define PI 3.14, #define FOO(x) x + 10
-- Command line Define flag: -D...
-  - gcc -Wall -g  -DTRACE -o hello hello.c
+  - Solution: header guard: `#ifndef FOO_C_` `#define FOO_C_`... `#endif`
+- Macro: `#define PI 3.14`, `#define FOO(x) x + 10`: first token is defined variable, the remains are its value
+  - or you can just `#define DEBUG` without value, which serves as a flag
+- Command line Define flag: `-D...`
+  - `gcc -Wall -g  -DTRACE -o hello hello.c`
   - Code: 
   - `#ifdef TRACE`
   - `#define DEBUG(f) printf("%s\n", f) \\ define DEBUG to debug function`
   - `#else`
   - `#define DEBUG(f) \\ define DEBUG to nothing (ignore it)`
   - `#endif`
-- external libraries are dynamically linked to .o files
+- external libraries (`stdlib.h`, `string.h`) are dynamically linked to .o files
 - Functions and global variables are `extern` by default. `extern`
 means they can access and can be accessed by things outside of this 
 file.
