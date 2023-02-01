@@ -171,6 +171,16 @@ NULL for error or reaching the end of directory
 
 ## C++
 ### C++ Basic
+- Include:
+  - almost like C, but no `.h` anymore
+  - for C's header like `<stdlib.h>`, change to `<cstdlib>`
+- Namespace:
+  - include only includes file, which is not equal to using namespace
+  - namespace creates a scope where name collision inside the scope is not allowed, but outside is allowed
+  - A namespace may spread multiple files, like `std::cout` in `<cstream>`, `std::string` in `<cstring>`
+  - Usually we need qualifier like `std::` to qualify an object if we use it outside of the namespace
+  - We can omit the qualifier by `using std`: use all objects inside std (not very good)
+  - Or we can only `using std::string`: better
 - Reference: creating alias: `int& y = x`, so y and x refer to the same thing.
 Useful when passing reference to a function. (Reference is a better pointer: we
 don't need to dereference it.)
