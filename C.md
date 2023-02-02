@@ -187,6 +187,9 @@ don't need to dereference it.)
   - `swap(a, b);`
   - `int swap(int& x, int& y) {...}`
   - change x and y is equivalent to change a and b
+  - Use reference for input parameter, const pointer for output parameter
+  - Unlike pointer, when we create a reference, we must initialize it. And this reference cannot change to refer
+    another thing after it's created
 - const: `const int i`
   - i will not change within current function *scope* (current function, 
     the callee, callee's callee). const parameter cannot be changed
