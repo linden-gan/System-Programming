@@ -179,6 +179,7 @@ NULL for error or reaching the end of directory
   - namespace creates a scope where name collision inside the scope is not allowed, but outside is allowed
   - A namespace may spread multiple files, like `std::cout` in `<cstream>`, `std::string` in `<cstring>`
   - Usually we need qualifier like `std::` to qualify an object if we use it outside of the namespace
+  - For objects not in any namespace, we don't need qualifier
   - We can omit the qualifier by `using std`: use all objects inside std (not very good)
   - Or we can only `using std::string`: better
 - Reference: creating alias: `int& y = x`, so y and x refer to the same thing.
@@ -208,37 +209,40 @@ don't need to dereference it.)
   via this reference.
     
 ### C++ Class
-  - Seperation of declaration and definition.
-  - Initialization: `Point p;  // default constructor`, 
-    `const Point p(x1, x2);  // construct a constant point`
-  - const method: `bool Compare(const Point p1, const Point p2) const {...}`
-    - method that won't change the object's fields.
-    - a constant object can only be called on its constant method.
-  - class's members are private by default; struct's members are public by
-  default.
-  - Convention: use `x_`, `y_` for private member in a class.
+- Seperation of declaration and definition.
+- Initialization: `Point p;  // default constructor`, 
+  `const Point p(x1, x2);  // construct a constant point (its members cannot be changed)`
+- const method: `bool Compare(const Point p1, const Point p2) const {...}`
+  - method that won't change the object's fields.
+  - a constant object can only be called on its constant method.
+- class's members are private by default; struct's members are public by
+default.
+- Convention: use `x_`, `y_` for private member in a class.
+- `this` is a pointer to itself
+
 - constructor
   - default constructor: constructor that doesn't take any arguments
   - default synthetic constructor: when you don't define any constructor,
   system will make one for you which doesn't take any arguments and will put
   garbadge data to members that are primitive data and call default constructor
-  for members that are objects.
+  for members that are objects. If you have reference or const member, it will fail.
+  If you defined any ctor, system will not generate default synthetic ctor.
   - `Point arr[3];`: initialize an array of Points by calling each Point's
   default constructor.
   - Initialization: `Point(const int x, const int y, const int z): x_(x), 
     y_(2 * y), z_(z + 3) { }`
-    - before actual construction, first initialize x, y, z to the expressions
-      inside the parentheses. (the initialization order is determined by the
-      members' declaration order.)
-    - members that are not in the initialization list will be
-    initialized/constructed by default before actual constructor body.
-  - Copy constructor:
-    - `Point::Point(const Point& src): x_(src._x), y_(src_y) { }`
-    - `Point des(src);`
-    - If you don't define your own, C++ can make a synthesized one with simplest
-      behavior (only do shallow copy)
-    - Copy is used when pass an object as a parameter or return an object or assign
-      one object to the other.
+    - before ctor body, compiler will first initialize things in the list.
+    - the initialization order is determined by the
+      members' declaration order, not by order in the list.
+    - members that are not in the list will be
+      initialized by their default ctor first before actual constructor body.
+- Copy constructor:
+  - `Point::Point(const Point& src): x_(src._x), y_(src_y) { }`
+  - `Point des(src);`
+  - If you don't define your own, C++ can make a synthesized one with simplest
+    behavior (only do shallow copy)
+  - Copy is used when pass an object as a parameter or return an object or assign
+    one object to the other.
 - Overload operator:
   - Overload the assignment sign =
   - `Point& Point::operator=(const Point& src) {`
