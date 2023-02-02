@@ -175,9 +175,10 @@ NULL for error or reaching the end of directory
   - almost like C, but no `.h` anymore
   - for C's header like `<stdlib.h>`, change to `<cstdlib>`
 - Namespace:
-  - include only includes file, which is not equal to using namespace
+  - `include` only includes file, which is not equal to using namespace
   - namespace creates a scope where name collision inside the scope is not allowed, but outside is allowed
   - A namespace may spread multiple files, like `std::cout` in `<cstream>`, `std::string` in `<cstring>`
+  - If we don't put a class to a namespace, just
   - Usually we need qualifier like `std::` to qualify an object if we use it outside of the namespace
   - For objects not in any namespace, we don't need qualifier
   - We can omit the qualifier by `using std`: use all objects inside std (not very good)
@@ -218,7 +219,7 @@ don't need to dereference it.)
 - class's members are private by default; struct's members are public by
 default.
 - Convention: use `x_`, `y_` for private member in a class.
-- `this` is a pointer to itself
+- `this`: a constant pointer to itself
 
 - constructor
   - default constructor: constructor that doesn't take any arguments
@@ -237,14 +238,18 @@ default.
     - members that are not in the list will be
       initialized by their default ctor first before actual constructor body.
 - Copy constructor:
+  - construct an object by copying an existing one. Previously we don't have this object,
+    different from assignment construction where it assign/copy an object to an existing one.
   - `Point::Point(const Point& src): x_(src._x), y_(src_y) { }`
+  - `Point src(1, 3);`
   - `Point des(src);`
+  - `Point des1 = src;`
   - If you don't define your own, C++ can make a synthesized one with simplest
     behavior (only do shallow copy)
   - Copy is used when pass an object as a parameter or return an object or assign
     one object to the other.
 - Overload operator:
-  - Overload the assignment sign =
+  - Overload the assignment sign = (called assignment construction)
   - `Point& Point::operator=(const Point& src) {`
     - `if (this != &src) {  // check whether this points to src. if so, we are
       assigning an object to itself`
@@ -252,18 +257,18 @@ default.
       - `y_ = src.y+;`
     - `}`
     - `return *this;  // return a reference of the object {this} points to`
-- `this`: a constant pointer to itself
+    - If you don't define your own, C++ can make a synthesized one with simplest behavior
 - Destructor: `Point::~Point() {}`
-  - No need to call destructor. When an *object* is out of scope, C++ will automatically
-  call its destructor.
-  - Destructor destruct things in reverse order they are constructed, in terms of both
-  objects and object's internal member.
+  - No need to call destructor. When a stack object is out of scope, C++ will automatically
+  call its destructor. For heap object, we use `delete` keyword
+  - Destructor destruct things in reverse order they are constructed
 - Destructor, Copy constructor, Assignment constructor usually come all together or not
 at all.
 - When you don't want to define your own constructor:
   - `Point() = default;`, `Point(const Point& src) = default;`
 - When you want to disable user to call some copy constructor or assignment constructor:
   - `Point& operator=(const Point& src) = delete;`
+
 - Nonmember function:
   - Declared outside of the class, though still in the header file.
   - When writing definition in .cc file, do not need to attach the class's namespace before
@@ -273,12 +278,7 @@ at all.
     can do that by getter() and setter()).
     - but we can use `friend` to give non-member function access to non-public fields.
   - Don't attached to an object (`object.function()`) when it is called.
-- namespace: 
-  - `namespace name {`
-  - `// definitions there; no need of indentation`
-  - `}  // name    -> to remind the end of namespace`
-  - Just group related names together. To access them outside of this scope, write 
-    `name::function();`
+
 - use `nullptr` instead of `NULL`
 - `new`/`delete` is just like `malloc()`/`free()`:
   - `Point* p1 = new Point(1, 2, 3);`, `int* arr = new int[size];`
