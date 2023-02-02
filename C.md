@@ -171,27 +171,28 @@ NULL for error or reaching the end of directory
 
 ## C++
 ### C++ Basic
+- scope resolution operator `::`
+  - used to mark a function or class to its associated class or namespace.
 - Include:
-  - almost like C, but no `.h` anymore
-  - for C's header like `<stdlib.h>`, change to `<cstdlib>`
+  - almost like C, but no `.h` anymore.
+  - for C's header like `<stdlib.h>`, change to `<cstdlib>`.
 - Namespace:
-  - `include` only includes file, which is not equal to using namespace
-  - namespace creates a scope where name collision inside the scope is not allowed, but outside is allowed
-  - A namespace may spread multiple files, like `std::cout` in `<cstream>`, `std::string` in `<cstring>`
-  - If we don't put a class to a namespace, just
-  - Usually we need qualifier like `std::` to qualify an object if we use it outside of the namespace
-  - For objects not in any namespace, we don't need qualifier
-  - We can omit the qualifier by `using std`: use all objects inside std (not very good)
-  - Or we can only `using std::string`: better
+  - `include` only includes file, which is not equal to using namespace.
+  - namespace creates a scope where name collision inside the scope is not allowed, but outside is allowed.
+  - A namespace may spread multiple files, like `std::cout` in `<cstream>`, `std::string` in `<cstring>`.
+  - Usually we need qualifier like `std::` to qualify an object if we use it outside of the namespace.
+  - For objects not in any namespace, we don't need qualifier.
+  - We can omit the qualifier by `using std`: use all objects inside std (not very good).
+  - Or we can only `using std::string`: better.
 - Reference: creating alias: `int& y = x`, so y and x refer to the same thing.
 Useful when passing reference to a function. (Reference is a better pointer: we
-don't need to dereference it.)
+don't need to dereference it.).
   - `swap(a, b);`
   - `int swap(int& x, int& y) {...}`
-  - change x and y is equivalent to change a and b
-  - Use reference for input parameter, const pointer for output parameter
+  - change x and y is equivalent to change a and b.
+  - Use reference for input parameter, const pointer for output parameter.
   - Unlike pointer, when we create a reference, we must initialize it. And this reference cannot change to refer
-    another thing after it's created
+    another thing after it's created.
 - const: `const int i`
   - i will not change within current function *scope* (current function, 
     the callee, callee's callee). const parameter cannot be changed
@@ -219,7 +220,7 @@ don't need to dereference it.)
 - class's members are private by default; struct's members are public by
 default.
 - Convention: use `x_`, `y_` for private member in a class.
-- `this`: a constant pointer to itself
+- `this`: a constant pointer to itself.
 
 - constructor
   - default constructor: constructor that doesn't take any arguments
@@ -252,7 +253,7 @@ default.
   - Overload the assignment sign = (called assignment construction)
   - `Point& Point::operator=(const Point& src) {`
     - `if (this != &src) {  // check whether this points to src. if so, we are
-      assigning an object to itself`
+      assigning an object to itself!`
       - `x_ = src.x_;`
       - `y_ = src.y+;`
     - `}`
@@ -260,8 +261,8 @@ default.
     - If you don't define your own, C++ can make a synthesized one with simplest behavior
 - Destructor: `Point::~Point() {}`
   - No need to call destructor. When a stack object is out of scope, C++ will automatically
-  call its destructor. For heap object, we use `delete` keyword
-  - Destructor destruct things in reverse order they are constructed
+  call its destructor. For heap object, we must use `delete` keyword to invoke destructor to free it from memory.
+  - Destructor destruct things in reverse order they are constructed.
 - Destructor, Copy constructor, Assignment constructor usually come all together or not
 at all.
 - When you don't want to define your own constructor:
@@ -270,7 +271,7 @@ at all.
   - `Point& operator=(const Point& src) = delete;`
 
 - Nonmember function:
-  - Declared outside of the class, though still in the header file.
+  - Declared outside of the class scope, though still in the header file.
   - When writing definition in .cc file, do not need to attach the class's namespace before
     it like `double Point::Distance(const Point& p1, const Point& p2);`. Just write `double 
     Distance(const Point& p1, const Point& p2);`.
@@ -278,19 +279,21 @@ at all.
     can do that by getter() and setter()).
     - but we can use `friend` to give non-member function access to non-public fields.
   - Don't attached to an object (`object.function()`) when it is called.
+  - We use nonmember when not modifying this class but return a new object, or when the operator is commutative.
 
 - use `nullptr` instead of `NULL`
 - `new`/`delete` is just like `malloc()`/`free()`:
-  - `Point* p1 = new Point(1, 2, 3);`, `int* arr = new int[size];`
+  - `Point* p1 = new Point(1, 2, 3);`, `int* num = new int(333);`, `int* arr = new int[size];`
   - `delete p1;`, `delete[] arr;`
-    - When *object* falls out of scope, destructor will be automatically,
-    called, so we don't need to manually use `delete`.
+    - When stack *object* falls out of scope, destructor will be automatically
+      called, so we don't need to manually use `delete`.
     - which means if a *pointer* falls out of scope, compiler will just
-    clean the pointer, so the data pointed by the pointer will cause leak.
+      clean the pointer, so the data pointed by the pointer will cause leak.
+    - so whenever we used new to create a heap object, we need delete it.
   - We can safely ignore the exceptions thrown by new or delete.
   
 ### Polymorphism
-- Template: type parameter
+- Template: type parameter, written as the first token of function or class
   - `template <typename T>`
   - `int compare(const T &value1, const T &value2);`
   - for main:
@@ -301,21 +304,27 @@ at all.
   the object.h in main to compile them together.
     
 ### C++ STL
-- Containers: store collection of objects.
+- Containers: store collection of objects. But C++ containers store by values, which means it needs copy a lot.
 - Examples:
 - Vector: dynamically resizable array. `vector<Tracer> vec;`
   - When insert, resize, sort, this container will make copies...
-  - iterator: `vector<Tracer>::iterator it;`
+  - iterator: `vector<Tracer>::iterator it;`: an iterator class associated with vector class
     - iterator overrides lots of operators....
     - `*it` to get element
     - `it++` to move forward by one element
-    - `it = vec.begin()`: `vec.begin()` return the first element to the iterator.
+    - `it = vec.begin()`: `vec.begin()` returns an iterator pointing to the first element.
     - `it = element`: move our iterator to this element.
     - `for (auto it = vec.begin(); it < vec.end(); it++) { ... }`
-    - `vec.end()` returns one element past the last element.
+    - `vec.end()` returns an iterator pointing to one element past the last element.
     - `auto` is for type inference
-    - for each loop: `for (auto element : container) { cout << element << endl; }`
-- `for_each(vec.begin(), vec.end(), &Print);`: a syntax sugar of for loop  
+    - Even simpler: for each loop: `for (auto element : container) { cout << element << endl; }`
+- STL Algorithms
+  - `for_each(vec.begin(), vec.end(), &Print);`: a syntax sugar of for loop . `&Print` is a function pointer.
+  - `sort()`
+  - `min_element()`
+  - `binary_search()`
+  - C++ anonymous function: `[](type param1, type param2) { ... }`
+ 
 - list: actually a doubly-linked list.
   - so it doesn't support array-like access `lst[2]`
 - map: associative collection with an underlying structure `Pair<>`
