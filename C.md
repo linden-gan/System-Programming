@@ -278,15 +278,21 @@ at all.
   - Don't have access to the class's non-public members (cannot directly read or write, but
     can do that by getter() and setter()).
     - but we can use `friend` to give non-member function access to non-public fields.
+      It needs to be declared within the class scope.
   - Don't attached to an object (`object.function()`) when it is called.
+  - Actually, nonmember function "of a class" can be not relevant to that class at all. (just like `printf()`, `sort()`)
   - We use nonmember when not modifying this class but return a new object, or when the operator is commutative.
+
+- static function & field
+  - Independant from individual instance. Shared by all instances.
+  - `class::stat_function();`
 
 - use `nullptr` instead of `NULL`
 - `new`/`delete` is just like `malloc()`/`free()`:
   - `Point* p1 = new Point(1, 2, 3);`, `int* num = new int(333);`, `int* arr = new int[size];`
   - `delete p1;`, `delete[] arr;`
-    - When stack *object* falls out of scope, destructor will be automatically
-      called, so we don't need to manually use `delete`.
+    - When stack objects falls out of scope, their destructors will be automatically
+      called in reverse order they were created, so we don't need to manually use `delete`.
     - which means if a *pointer* falls out of scope, compiler will just
       clean the pointer, so the data pointed by the pointer will cause leak.
     - so whenever we used new to create a heap object, we need delete it.
@@ -306,11 +312,11 @@ at all.
 ### C++ STL
 - Containers: store collection of objects. But C++ containers store by values, which means it needs copy a lot.
 - Examples:
-- Vector: dynamically resizable array. `vector<Tracer> vec;`
+- vector: dynamically resizable array. `vector<Tracer> vec;`
   - When insert, resize, sort, this container will make copies...
   - iterator: `vector<Tracer>::iterator it;`: an iterator class associated with vector class
     - iterator overrides lots of operators....
-    - `*it` to get element
+    - `*it` dereference to get element
     - `it++` to move forward by one element
     - `it = vec.begin()`: `vec.begin()` returns an iterator pointing to the first element.
     - `it = element`: move our iterator to this element.
@@ -318,52 +324,60 @@ at all.
     - `vec.end()` returns an iterator pointing to one element past the last element.
     - `auto` is for type inference
     - Even simpler: for each loop: `for (auto element : container) { cout << element << endl; }`
+
 - STL Algorithms
   - `for_each(vec.begin(), vec.end(), &Print);`: a syntax sugar of for loop . `&Print` is a function pointer.
-  - `sort()`
-  - `min_element()`
-  - `binary_search()`
+  - `sort(vec.begin(), vec.end(), optional &comp);`
+  - `min_element(vec.begin(), vec.end(), optional &comp)`
+  - `binary_search(vec.begin(), vec.end(), optional &comp)`
   - C++ anonymous function: `[](type param1, type param2) { ... }`
  
 - list: actually a doubly-linked list.
   - so it doesn't support array-like access `lst[2]`
-- map: associative collection with an underlying structure `Pair<>`
+- map: associative collection with an underlying structure `Pair<>`, implemented as a search tree O(log n).
   - `map<K, V> table;`
   - map also overrides lots of operators....
   - `V result = table[a];`: access a
   - `table[a] = b;`: insert pair (a,b)
   - `table[a];`: will just insert a pair (a, ?), where ? is the default
     declaration of type V.
-  - `table.find(a);`: find a, return one pass the end of map, aka
-  `table.end()` if not found.
+  - `table.find(a);`: if found, return an iterator pointing to the key value pair `pair`. 
+    If not found, return `table.end()`.
   - map will be sorted automatically.
+- unordered_set: O(1)
   
 ### Smart Pointer
-- store smart pointers in a data structure instead. 
-  `vector<shared_ptr<int>> vec;`
+- A kind of pointer that helps us automatically delete object when no pointer on it.
+- Store smart pointers in STL data structure to avoid copy.
+  `vector<shared_ptr<Point>> vec;`
 - `shared_ptr<int> sp(new int(3));` multiple smart pointers share one data. 
   Use reference count to record how many pointers now pointing to this data.
   If count = 0, free the data.
-  - `share_ptr<int> copy(sp);` copy constructor
-  - `sp.use_count()` return `count reference
+  - `share_ptr<int> copy_ptr(sp);` copy constructor
+  - `sp.use_count()` return count reference
+  - `sp.unique()` return true if count == 1
 - `unique_ptr<int> sp(new int(5));` only one unique pointer is allowed per data.
-Copy constructor and assignment operator overload are both disabled.
+  Copy constructor and assignment operator overload are both disabled.
   - How to transfer the unique ownership?
   - `x.release();` return the pointer that x contains. Cancel x's ownership to it
     so now x holds `nullptr`
   - `unique_ptr<int> y(x.release());` transfer x's ownership to y so now y holds
     `nullptr`
   - `z.reset(y.release())` z free its old value to reset to y's value; at the
-  same time y transfer its ownership to z so now y holds `nullptr`
-  - Move semantics: `unique_ptr<int> b = move(a);` so now a holds `nullptr`
+    same time y transfer its ownership to z so now y holds `nullptr`
+  - Move semantics: `unique_ptr<int> b = move(a);` so now `a` holds `nullptr`
 - `weak_ptr<int> wp;` we cannot dereference a weak pointer, and weak pointer
-doesn't count for reference.
-  - `w.lock()` return data w points to, usually jointly used with
-  `shared_ptr<int> x = w.lock();` to derive a shared pointer from a weak pointer.
+  doesn't count for reference.
+  - can resolve reference cycle problem (two struct have two smart pointers pointing to
+    each other, so they will never be deleted).
+  - `w.lock()` return a derived shared pointer, usually jointly used with
+    `shared_ptr<int> x = w.lock();`.
   - `w.expired()` return whether w is already a dangling pointer or not.
-- Drawbacks: 
+    Dangling means the data the weak pointer points to has been deleted.
+  
+- Drawbacks of smart pointers: 
   - Smart pointers cannot tell whether data is in heap or stack.
-  - Probably reuse a raw pointer.
+  - Smart pointers may reuse a raw pointer.
   
 ### Inheritance
 - `class Child : public Mother, Father { ... };`
