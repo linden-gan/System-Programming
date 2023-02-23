@@ -141,7 +141,7 @@ at all.
 ### C++ STL
 - Containers: store collection of objects. But C++ containers store by values, which means it needs copy a lot.
 - Examples:
-- vector: dynamically resizable array. `vector<Tracer> vec;`
+- vector: dynamically resizable array. `#include <vector>`, `vector<Tracer> vec;`
   - When insert, resize, sort, this container will make copies...
   - iterator: `vector<Tracer>::iterator it;`: an iterator class associated with vector class
     - iterator overrides lots of operators....
@@ -176,7 +176,7 @@ at all.
 - unordered_set: O(1)
   
 ### Smart Pointer
-- A kind of pointer that helps us automatically delete object when no pointer on it.
+- A kind of pointer that helps us automatically delete object when no pointer on it. `#include <memory>`
 - Store smart pointers in STL data structure to avoid copy.
   `vector<shared_ptr<Point>> vec;`
 - `shared_ptr<int> sp(new int(3));` multiple smart pointers share one data. 
