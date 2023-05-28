@@ -70,21 +70,21 @@ default.
 - Copy constructor:
   - construct an object by copying an existing one. Previously we don't have this object,
     different from assignment construction where it assign/copy an object to an existing one.
-  - `Point::Point(const Point& src): x_(src._x), y_(src_y) { }`
+  - `Point::Point(const Point& src): x_(src._x), y_(src._y) { }`
   - `Point src(1, 3);`
-  - `Point des(src);`
-  - `Point des1 = src;`
+  - `Point des1(src);`
+  - `Point des2 = src;`
   - If you don't define your own, C++ can make a synthesized one with simplest
     behavior (only do shallow copy)
   - Copy is used when pass an object as a parameter or return an object or assign
     one object to the other.
 - Overload operator:
-  - Overload the assignment sign = (called assignment construction)
+  - Overload the assignment sign = (called assignment constructor)
   - `Point& Point::operator=(const Point& src) {`
     - `if (this != &src) {  // check whether this points to src. if so, we are
       assigning an object to itself!`
       - `x_ = src.x_;`
-      - `y_ = src.y+;`
+      - `y_ = src.y_;`
     - `}`
     - `return *this;  // return a reference of the object {this} points to`
     - If you don't define your own, C++ can make a synthesized one with simplest behavior
