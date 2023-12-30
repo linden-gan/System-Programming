@@ -190,7 +190,7 @@ at all.
   - How to transfer the unique ownership?
   - `x.release();` return the pointer that x contains. Cancel x's ownership to it
     so now x holds `nullptr`
-  - `unique_ptr<int> y(x.release());` transfer x's ownership to y so now y holds
+  - `unique_ptr<int> y(x.release());` transfer x's ownership to y so now x holds
     `nullptr`
   - `z.reset(y.release())` z free its old value to reset to y's value; at the
     same time y transfer its ownership to z so now y holds `nullptr`
