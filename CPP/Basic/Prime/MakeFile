@@ -1,0 +1,8 @@
+CC = g++
+CFLAGS = -wall -g
+
+FindPrimes: FindPrimes.o Prime.o
+	$(CC) $(CFLAGS) -o FindPrimes.o Prime.o
+FindPrimes.o: FindPrimes.cpp Prime.o
+	$(CC) $(CFLAGS) -c FindPrimes.cpp Prime.o
+Prime.o: Prime.h

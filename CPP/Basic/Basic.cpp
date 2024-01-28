@@ -22,15 +22,15 @@ void func1() {
     cout << "You entered " << echo << " and " << echo_int << " and " << echo_double;
 }
 
-void func2(const vector<string>& input) {
-    std::ostringstream oss;
+string func2(const vector<string>& input) {
+    std::ostringstream oss;  // using stringstream is much faster than string concat
     for (const auto& element : input) {
         oss << element << ",";
     }
-    std::cout << oss.str() << std::endl;
+    return oss.str();  // convert everything in oss buffer to a string
 }
 
 int main() {
     vector<string> vec{ "A", "B", "C", "D", "E", "F", "G" };
-    func2(vec);
+    std::cout << func2(vec) << std::endl;
 }
