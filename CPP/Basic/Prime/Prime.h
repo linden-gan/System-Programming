@@ -1,5 +1,5 @@
 #include <unordered_set>
-#include <set>  // order is important because we wan to check from the smallest prime factor
+#include <set>  // order is important because we want to check from the smallest prime factor
 
 #ifndef PRIME_H_
 #define PRIME_H_

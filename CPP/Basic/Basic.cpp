@@ -17,7 +17,7 @@ void func1() {
     int echo_int;
     cin >> echo_int;
     cout << "Enter a double:" << endl;
-    int echo_double;
+    double echo_double;
     cin >> echo_double;
     cout << "You entered " << echo << " and " << echo_int << " and " << echo_double;
 }

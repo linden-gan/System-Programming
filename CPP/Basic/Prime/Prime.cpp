@@ -26,9 +26,10 @@ bool isPrime(int n, const std::set<int>& table = std::set<int>()) {
 }
 
 bool isPrimeByTable(int n, const std::set<int>& table) {
-    int maxPrime = *table.end();
+    // reverse iter returns 
+    int maxPrime = *table.rbegin();
     if (n <= maxPrime) {
-        return table.find(n) != table.end();
+        return table.find(n) != table.end();  // C++ 20 table.contains()
     }
     // cbegin: constant iter: won't change the value this iter points to
     // [&n]: capture list: capture n to this lambda from outsides by reference

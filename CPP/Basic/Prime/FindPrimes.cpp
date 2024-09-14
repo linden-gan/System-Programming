@@ -35,7 +35,8 @@ int main() {
     while (left < max) {
         std::set<int>* ret = getPrimesInRangeByTable(left, right, *primes);
         std::set<int>* newPrimes = new std::set<int>();
-        std::set_union(primes->cbegin(), primes->cend(), ret->cbegin(), ret->cend(), newPrimes->begin());
+        // looks like set_union doesn't work for set...
+        std::set_union(primes->begin(), primes->end(), ret->begin(), ret->end(), newPrimes->begin());
         std::swap(primes, newPrimes);
         delete ret;
         delete newPrimes;
@@ -44,5 +45,6 @@ int main() {
     }
     file << primes << std::endl;
     delete primes;
+    file.close();
     return 0;
 }
