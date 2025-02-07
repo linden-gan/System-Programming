@@ -41,7 +41,7 @@ callee to just modify it.
 *str = "Hello\n";
 4. After callee, caller can directly use the data. E.g. printf(str);
 String as output parameter:
-    
+```
     generate_string(char** s) {  // char** for string output parameter
         // *s = "hello";  // value in static memory
         strcpy(*s, "hello");  // strcpy can make *s modifiable
@@ -49,7 +49,7 @@ String as output parameter:
     char* res;
     generate_string(&res);
     printf("%s\n", res);
-
+```
 ### Functional pointer
 
     int negate(int i) {
