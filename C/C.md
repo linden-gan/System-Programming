@@ -27,17 +27,6 @@ For array, if we `int arr[4];` then it will be garbadges; if we `int arr[4] = {}
 
 Note: in `char* arr = "Hi";` arr points to a string literal array in static memory, so it can't be modified. Use `char arr[] = "Hi";` if want to modify the string, since it makes a copy of string array in stack.   
 
-String as output parameter:
-    
-    generate_string(char** s) {  // char** for string output parameter
-        *s = "hello";  // in static memory, use strcpy() if want it modifiable
-    }
-    
-    char* res;
-    generate_string(&res);
-    printf("%s\n", res);
-
-
 ### Error & Exit
 - process exit, aka return from main, with status code like exit(0).
   0 means EXIT_SUCCESS. Other numbers mean EXIT_FAILURE.
@@ -51,6 +40,15 @@ callee to just modify it.
 3. Inside callee, DEREFERENCE the passed address to modify. E.g.
 *str = "Hello\n";
 4. After callee, caller can directly use the data. E.g. printf(str);
+String as output parameter:
+    
+    generate_string(char** s) {  // char** for string output parameter
+        // *s = "hello";  // value in static memory
+        strcpy(*s, "hello");  // strcpy can make *s modifiable
+    }
+    char* res;
+    generate_string(&res);
+    printf("%s\n", res);
 
 ### Functional pointer
 

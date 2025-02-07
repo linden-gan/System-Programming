@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h> // printf
 #include <string.h> // strcpy, strcat
+#include <assert.h>
 
 void sizeof_incorrect_demo(int arr[]) {
     // sizeof is a compile-time unary operator
@@ -57,7 +58,7 @@ void string_demo() {
 
     // strncat
     char s7[10];
-    strncat(s7, 'abc', 2); // {'a', 'b', '\0'}
+    strncat(s7, "abc", 2); // {'a', 'b', '\0'}
     strncat(s7, "def", 4); // {'a', 'b', 'd', 'e', 'f'}
     // if n < src, only copy n element of src, plus \0
     // if n > src, copy whole src, plus \0, NO PADDING
@@ -79,11 +80,50 @@ void string_demo() {
     char s9[] = "Promethium";
     char* s10 = (char*) malloc(strlen(s9) + 1); // + 1 for \0
     strcpy(s10, s9);
-    print("s10 is %s\n", s10);
+    printf("s10 is %s\n", s10);
     free(s10);
 }
 
+// FunctionalPointerDemo
+double next_arithmetic_term(double curr, double k) {
+    return curr + k;
+}
+
+double next_geometric_term(double curr, double k) {
+    return curr * k;
+}
+
+void make_sequence(
+    double seq[], int size, double a, double k,  // array as output parameter
+    double (*get_next_term)(double curr, double k))
+{
+    assert(size > 0);
+    seq[0] = a;
+    for (int i = 1; i < size; i++) {
+        seq[i] = (*get_next_term)(seq[i-1], k);
+    }
+}
+
+void output_param_and_functional_pointer_demo() {
+    int size = 10;
+    double seq1[size];
+    double seq2[size];
+    // No need to pass &seq1. seq1 is already a pointer to the first element
+    make_sequence(seq1, size, 0.1, 4, next_arithmetic_term);
+    make_sequence(seq2, size, 10, -0.5, next_geometric_term);
+    for (int i = 0; i < size; i++) {
+        printf("%.2f, ", seq1[i]);
+    }
+    printf("\n");
+    for (int i = 0; i < size; i++) {
+        printf("%.2f, ", seq2[i]);
+    }
+    printf("\n");
+}
+// END FunctionalPointerDemo
+
 int main(int argc, char* argv[]) {
-    // array_demo();
+    array_demo();
     string_demo();
+    output_param_and_functional_pointer_demo();
 }
