@@ -84,15 +84,12 @@ void string_demo() {
     free(s10);
 }
 
-// FunctionalPointerDemo
 double next_arithmetic_term(double curr, double k) {
     return curr + k;
 }
-
 double next_geometric_term(double curr, double k) {
     return curr * k;
 }
-
 void make_sequence(
     double seq[], int size, double a, double k,  // array as output parameter
     double (*get_next_term)(double curr, double k))
@@ -103,12 +100,12 @@ void make_sequence(
         seq[i] = (*get_next_term)(seq[i-1], k);
     }
 }
-
-void output_param_and_functional_pointer_demo() {
+void array_as_output_param_and_functional_pointer_demo() {
     int size = 10;
     double seq1[size];
     double seq2[size];
-    // No need to pass &seq1. seq1 is already a pointer to the first element
+    // No need to pass &seq1 because we won't change the pointer seq1.
+    // We will change the data seq1 points to.
     make_sequence(seq1, size, 0.1, 4, next_arithmetic_term);
     make_sequence(seq2, size, 10, -0.5, next_geometric_term);
     for (int i = 0; i < size; i++) {
@@ -120,10 +117,9 @@ void output_param_and_functional_pointer_demo() {
     }
     printf("\n");
 }
-// END FunctionalPointerDemo
 
 int main(int argc, char* argv[]) {
     array_demo();
     string_demo();
-    output_param_and_functional_pointer_demo();
+    array_as_output_param_and_functional_pointer_demo();
 }

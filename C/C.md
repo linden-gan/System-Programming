@@ -43,10 +43,12 @@ callee to just modify it.
 String as output parameter:
 ```
     generate_string(char** s) {  // char** for string output parameter
-        // *s = "hello";  // value in static memory
+        // *s = "hello";  ->  not recommended because "hello" is in static memory
         strcpy(*s, "hello");  // strcpy can make *s modifiable
     }
     char* res;
+    // We will change the pointer *res to point to other string,
+    // so we have to pass in the pointer's pointer.
     generate_string(&res);
     printf("%s\n", res);
 ```
